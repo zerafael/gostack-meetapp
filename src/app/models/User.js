@@ -7,6 +7,7 @@ class User extends Model {
       {
         name: Sequelize.STRING,
         email: Sequelize.STRING,
+        password: Sequelize.VIRTUAL,
         password_hash: Sequelize.STRING,
       },
       {
@@ -19,6 +20,10 @@ class User extends Model {
         user.password_hash = await bcrypt.hash(user.password, 8);
       }
     });
+  }
+
+  checkPassword(password) {
+    return bcrypt.compare(password, this.password_hash);
   }
 }
 
