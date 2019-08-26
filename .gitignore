@@ -130,4 +130,7 @@ typings/
 # Ignore all local history of files
 .history
 
+# Ignore files
+/tmp/uploads
+
 # End of https://www.gitignore.io/api/node,macos,visualstudiocode
