@@ -2,7 +2,10 @@ import { isBefore } from 'date-fns';
 import { Op } from 'sequelize';
 
 import Meetup from '../models/Meetup';
+import User from '../models/User';
 import Subscription from '../models/Subscription';
+
+import Mail from '../../lib/Mail';
 
 class SubscriptionController {
   async index(req, res) {
@@ -29,7 +32,15 @@ class SubscriptionController {
   }
 
   async store(req, res) {
-    const meetup = await Meetup.findByPk(req.params.id);
+    const meetup = await Meetup.findByPk(req.params.id, {
+      include: [
+        {
+          model: User,
+          as: 'organizer',
+          attributes: ['name', 'email'],
+        },
+      ],
+    });
 
     if (meetup.organizer_id === req.userId) {
       return res
@@ -85,6 +96,22 @@ class SubscriptionController {
       user_id: req.userId,
       meetup_id: meetup.id,
     });
+
+    if (subscription) {
+      const user = await User.findByPk(subscription.user_id);
+
+      await Mail.sendMail({
+        to: `${meetup.organizer.name} <${meetup.organizer.email}>`,
+        subject: `Nova inscrição no meetup ${meetup.title}`,
+        template: 'subscription',
+        context: {
+          organizer: meetup.organizer.name,
+          title: meetup.title,
+          user: user.name,
+          email: user.email,
+        },
+      });
+    }
 
     return res.json(subscription);
   }
