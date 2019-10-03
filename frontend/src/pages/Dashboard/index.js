@@ -1,28 +1,24 @@
-import React, { useState, useEffect } from 'react';
+import React, { useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import { format, parseISO } from 'date-fns';
 import pt from 'date-fns/locale/pt-BR';
 
 import { MdControlPoint, MdChevronRight } from 'react-icons/md';
 
-import api from '~/services/api';
 import history from '~/services/history';
+
+import { meetupsRequest } from '~/store/modules/meetups/actions';
 
 import { Container, Meetup } from './styles';
 
 function Dashboard() {
-  const [meetups, setMeetups] = useState([]);
+  const dispatch = useDispatch();
+  const meetups = useSelector(state => state.meetups.meetups);
+  const loading = useSelector(state => state.meetups.loading);
 
   useEffect(() => {
-    async function loadMeetups() {
-      const response = await api.get('/organizing');
-
-      setMeetups(response.data);
-
-      console.tron.log(meetups);
-    }
-
-    loadMeetups();
-  }, [meetups]);
+    dispatch(meetupsRequest());
+  }, [dispatch]);
 
   // TODO: melhorar a formatação de data
   function formatDate(date) {
@@ -35,6 +31,10 @@ function Dashboard() {
     history.push('/new');
   }
 
+  function handleDetail() {
+    history.push('/detail');
+  }
+
   return (
     <Container>
       <header>
@@ -45,17 +45,21 @@ function Dashboard() {
         </button>
       </header>
 
-      <ul>
-        {meetups.map(meetup => (
-          <Meetup>
-            <strong>{meetup.title}</strong>
-            <div>
-              <span>{formatDate(meetup.date)}</span>
-              <MdChevronRight size={28} color="#fff" />
-            </div>
-          </Meetup>
-        ))}
-      </ul>
+      {loading ? (
+        <h1>Carregando...</h1>
+      ) : (
+        <ul>
+          {meetups.map(meetup => (
+            <Meetup onClick={handleDetail}>
+              <strong>{meetup.title}</strong>
+              <div>
+                <span>{formatDate(meetup.date)}</span>
+                <MdChevronRight size={28} color="#fff" />
+              </div>
+            </Meetup>
+          ))}
+        </ul>
+      )}
     </Container>
   );
 }

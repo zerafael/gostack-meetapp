@@ -53,6 +53,7 @@ export const Meetup = styled.li`
   background: rgba(0, 0, 0, 0.1);
   padding: 0 30px;
   height: 62px;
+  cursor: pointer;
 
   strong {
     color: #fff;
