@@ -31,8 +31,8 @@ function Dashboard() {
     history.push('/new');
   }
 
-  function handleDetail() {
-    history.push('/detail');
+  function handleDetail(meetup) {
+    history.push(`/detail/${meetup.id}`);
   }
 
   return (
@@ -50,7 +50,7 @@ function Dashboard() {
       ) : (
         <ul>
           {meetups.map(meetup => (
-            <Meetup onClick={handleDetail}>
+            <Meetup onClick={() => handleDetail(meetup)}>
               <strong>{meetup.title}</strong>
               <div>
                 <span>{formatDate(meetup.date)}</span>

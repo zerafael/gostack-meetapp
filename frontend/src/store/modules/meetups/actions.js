@@ -16,3 +16,10 @@ export function meetupsFailure() {
     type: '@meetups/MEETUPS_FAILURE',
   };
 }
+
+export function meetupCancelRequest(id) {
+  return {
+    type: '@meetups/MEETUPS_CANCEL_REQUEST',
+    payload: { id },
+  };
+}
