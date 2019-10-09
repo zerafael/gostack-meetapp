@@ -65,9 +65,19 @@ class MeetupController {
 
     const organizer_id = req.userId;
 
-    const meetup = await Meetup.create({
+    const { id } = await Meetup.create({
       ...req.body,
       organizer_id,
+    });
+
+    const meetup = await Meetup.findByPk(id, {
+      include: [
+        {
+          model: File,
+          as: 'banner',
+          attributes: ['path', 'name', 'url'],
+        },
+      ],
     });
 
     return res.json(meetup);
@@ -89,7 +99,15 @@ class MeetupController {
 
     const user_id = req.userId;
 
-    const meetup = await Meetup.findByPk(req.params.id);
+    const meetup = await Meetup.findByPk(req.params.id, {
+      include: [
+        {
+          model: File,
+          as: 'banner',
+          attributes: ['path', 'name', 'url'],
+        },
+      ],
+    });
 
     if (user_id !== meetup.organizer_id) {
       return res
