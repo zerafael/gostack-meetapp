@@ -1,4 +1,5 @@
 import styled from 'styled-components';
+import { darken } from 'polished';
 
 export const Container = styled.div`
   max-width: 940px;
@@ -28,6 +29,7 @@ export const Container = styled.div`
         padding: 10px 20px;
         font-size: 16px;
         font-weight: bold;
+        transition: background 0.2s;
 
         svg {
           margin-right: 7px;
@@ -37,10 +39,18 @@ export const Container = styled.div`
       .edit {
         background: #4dbaf9;
         margin-right: 15px;
+
+        &:hover {
+          background: ${darken(0.1, '#4dbaf9')};
+        }
       }
 
       .cancel {
         background: #d44059;
+
+        &:hover {
+          background: ${darken(0.08, '#d44059')};
+        }
       }
     }
   }
@@ -48,13 +58,14 @@ export const Container = styled.div`
 
 export const Meetup = styled.div`
   img {
-    margin: 50px 0;
+    margin-top: 50px;
     border-radius: 4px;
     width: 940px;
     height: 300px;
   }
 
   p {
+    margin-top: 50px;
     color: #fff;
     font-size: 18px;
     padding-bottom: 30px;

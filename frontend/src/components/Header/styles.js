@@ -54,7 +54,7 @@ export const Profile = styled.div`
     transition: background 0.02s;
 
     &:hover {
-      background: ${darken(0.03, '#d44059')};
+      background: ${darken(0.08, '#d44059')};
     }
   }
 `;

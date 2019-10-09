@@ -10,8 +10,10 @@ export default function user(state = INITIAL_STATE, action) {
       case '@auth/SIGN_IN_SUCCESS':
         draft.profile = action.payload.user;
         break;
-      default:
+      case '@user/UPDATE_PROFILE_SUCCESS':
+        draft.profile = action.payload.profile;
         break;
+      default:
     }
   });
 }

@@ -20,7 +20,6 @@ function Dashboard() {
     dispatch(meetupsRequest());
   }, [dispatch]);
 
-  // TODO: melhorar a formatação de data
   function formatDate(date) {
     return format(parseISO(date), "dd 'de' MMMM ', às' HH'h'", {
       locale: pt,

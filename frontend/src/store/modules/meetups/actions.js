@@ -23,3 +23,31 @@ export function meetupCancelRequest(id) {
     payload: { id },
   };
 }
+
+export function meetupUpdateRequest(data) {
+  return {
+    type: '@meetups/MEETUP_UPDATE_REQUEST',
+    payload: { data },
+  };
+}
+
+export function meetupUpdateSuccess(meetup) {
+  return {
+    type: '@meetups/MEETUP_UPDATE_SUCCESS',
+    payload: { meetup },
+  };
+}
+
+export function meetupCreateRequest(data) {
+  return {
+    type: '@meetups/MEETUP_CREATE_REQUEST',
+    payload: { data },
+  };
+}
+
+export function meetupCreateSuccess(meetup) {
+  return {
+    type: '@meetups/MEETUP_CREATE_SUCCESS',
+    payload: { meetup },
+  };
+}

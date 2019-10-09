@@ -32,8 +32,10 @@ function Detail({ match }) {
   useEffect(() => {
     const { id } = match.params;
 
+    console.tron.log(meetups);
+
     setMeetup(meetups.find(m => m.id.toString() === id));
-  }, [match.params, meetup, meetups]);
+  }, []); //eslint-disable-line
 
   function formatDate(date) {
     return format(parseISO(date), "dd 'de' MMMM ', às' HH'h'", {
@@ -73,7 +75,7 @@ function Detail({ match }) {
         </div>
       </header>
       <Meetup>
-        <img src={meetup.banner.url} alt="MeetUp" />
+        {meetup.banner ? <img src={meetup.banner.url} alt="MeetUp" /> : null}
         <p>{meetup.description}</p>
         <footer>
           <span>
