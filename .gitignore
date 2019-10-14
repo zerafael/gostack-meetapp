@@ -128,7 +128,7 @@ typings/
 
 # Xcode
 #
-mobile/build/
+mobile/ios/build/
 *.pbxuser
 !default.pbxuser
 *.mode1v3
@@ -147,7 +147,7 @@ DerivedData
 
 # Android/IntelliJ
 #
-mobile/build/
+mobile/android/build/
 .idea
 .gradle
 local.properties
