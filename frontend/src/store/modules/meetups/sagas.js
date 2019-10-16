@@ -30,7 +30,6 @@ export function* getMeetups() {
 export function* cancelMeetup({ payload }) {
   try {
     const { id } = payload;
-    console.tron.log('Entrou aqui');
     yield call(api.delete, `meetups/${id}`);
 
     toast.success('A Meetup foi cancelada com sucesso.', {
