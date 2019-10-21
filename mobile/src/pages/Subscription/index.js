@@ -3,10 +3,12 @@ import { Text } from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 
 import Background from '~/components/Background';
+import NavBar from '~/components/NavBar';
 
 function Subscription() {
   return (
     <Background>
+      <NavBar />
       <Text>Subscription</Text>
     </Background>
   );

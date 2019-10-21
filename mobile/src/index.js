@@ -13,7 +13,7 @@ function Index() {
     <>
       <Provider store={store}>
         <PersistGate persistor={persistor}>
-          <StatusBar barStyle="light-content" backgroundColor="#22202C" />
+          <StatusBar barStyle="light-content" background="rgba(0, 0, 0, 0.3)" />
           <App />
         </PersistGate>
       </Provider>
