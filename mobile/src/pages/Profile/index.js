@@ -28,13 +28,13 @@ function Profile() {
 
   const [name, setName] = useState(profile.name);
   const [email, setEmail] = useState(profile.email);
+  const [oldPassword, setOldPassword] = useState('');
   const [password, setPassword] = useState('');
-  const [newPassword, setNewPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
 
   useEffect(() => {
+    setOldPassword('');
     setPassword('');
-    setNewPassword('');
     setConfirmPassword('');
   }, [profile]);
 
@@ -43,8 +43,8 @@ function Profile() {
       updateProfileRequest({
         name,
         email,
+        oldPassword,
         password,
-        newPassword,
         confirmPassword,
       })
     );
@@ -67,7 +67,7 @@ function Profile() {
             returnKeyType="next"
             onSubmitEditing={() => emailRef.current.focus()}
             value={name}
-            onChange={setName}
+            onChangeText={setName}
           />
           <FormInput
             placeholder="E-mail"
@@ -78,7 +78,7 @@ function Profile() {
             returnKeyType="next"
             onSubmitEditing={() => passwordRef.current.focus()}
             value={email}
-            onChange={setEmail}
+            onChangeText={setEmail}
           />
 
           <Separator />
@@ -89,8 +89,8 @@ function Profile() {
             ref={passwordRef}
             returnKeyType="next"
             onSubmitEditing={() => newPasswordRef.current.focus()}
-            value={password}
-            onChange={setPassword}
+            value={oldPassword}
+            onChangeText={setOldPassword}
           />
           <FormInput
             placeholder="Nova senha"
@@ -98,8 +98,8 @@ function Profile() {
             ref={newPasswordRef}
             returnKeyType="next"
             onSubmitEditing={() => confirmPasswordRef.current.focus()}
-            value={newPassword}
-            onChange={setNewPassword}
+            value={password}
+            onChangeText={setPassword}
           />
           <FormInput
             placeholder="Confirmação de senha"
@@ -108,7 +108,7 @@ function Profile() {
             returnKeyType="send"
             onSubmitEditing={handleSubmit}
             value={confirmPassword}
-            onChange={setConfirmPassword}
+            onChangeText={setConfirmPassword}
           />
 
           <SubmitButton onPress={handleSubmit}>Salvar perfil</SubmitButton>
