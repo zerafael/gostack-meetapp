@@ -6,7 +6,7 @@ export default reducers => {
     {
       key: 'meetup',
       storage: AsyncStorage,
-      whitelist: ['auth', 'user', 'meetups'],
+      whitelist: ['auth', 'user', 'subscriptions'],
     },
     reducers
   );

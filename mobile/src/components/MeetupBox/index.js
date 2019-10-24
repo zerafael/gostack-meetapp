@@ -13,14 +13,19 @@ import {
   MeetupButton,
 } from './styles';
 
-function MeetupBox({ style, meetup }) {
+function MeetupBox({ style, meetup, onPressButton, subscription }) {
   const dateFormatted = useMemo(() =>
     format(parseISO(meetup.date), "dd 'de' MMMM, 'às' H'h'", { locale: pt })
   );
+
   return (
     <Container style={style}>
       <Image
-        source={{ uri: 'https://camunda.com/img/events/meetup-example.jpg' }}
+        source={{
+          uri: meetup.banner
+            ? meetup.banner.url
+            : 'https://camunda.com/img/events/meetup-example.jpg',
+        }}
       />
       <Info>
         <Title>{meetup.title}</Title>
@@ -37,7 +42,9 @@ function MeetupBox({ style, meetup }) {
           <Text>{`Organizador: ${meetup.organizer.name}`}</Text>
         </TextInfo>
 
-        <MeetupButton>Realizar inscrição</MeetupButton>
+        <MeetupButton onPress={onPressButton}>
+          {subscription ? 'Cancelar inscrição' : 'Realizar inscrição'}
+        </MeetupButton>
       </Info>
     </Container>
   );
