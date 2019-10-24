@@ -6,6 +6,7 @@ import User from '../models/User';
 import Subscription from '../models/Subscription';
 
 import Mail from '../../lib/Mail';
+import File from '../models/File';
 
 class SubscriptionController {
   async index(req, res) {
@@ -23,6 +24,18 @@ class SubscriptionController {
               [Op.gt]: new Date(),
             },
           },
+          include: [
+            {
+              model: User,
+              as: 'organizer',
+              attributes: ['name', 'email'],
+            },
+            {
+              model: File,
+              as: 'banner',
+              attributes: ['name', 'path', 'url'],
+            },
+          ],
         },
       ],
       order: [[{ model: Meetup, as: 'meetup' }, 'date']],
@@ -77,7 +90,7 @@ class SubscriptionController {
         {
           model: Meetup,
           as: 'meetup',
-          attibutes: ['id', 'date'],
+          attributes: ['id', 'date'],
           where: {
             date: meetup.date,
           },
@@ -92,9 +105,31 @@ class SubscriptionController {
         .json({ error: "Can't subscribe to two meetups at the same time" });
     }
 
-    const subscription = await Subscription.create({
+    const { id } = await Subscription.create({
       user_id: req.userId,
       meetup_id: meetup.id,
+    });
+
+    const subscription = await Subscription.findByPk(id, {
+      include: [
+        {
+          model: Meetup,
+          as: 'meetup',
+          attributes: ['id', 'title', 'description', 'date', 'location'],
+          include: [
+            {
+              model: User,
+              as: 'organizer',
+              attributes: ['name', 'email'],
+            },
+            {
+              model: File,
+              as: 'banner',
+              attributes: ['name', 'path', 'url'],
+            },
+          ],
+        },
+      ],
     });
 
     if (subscription) {
