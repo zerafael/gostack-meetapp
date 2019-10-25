@@ -29,6 +29,9 @@ function meetups(state = INITIAL_STATE, action) {
       case '@meetups/MEETUP_CREATE_SUCCESS':
         draft.meetups.push(action.payload.meetup);
         break;
+      case '@auth/SIGN_OUT':
+        draft.meetups = [];
+        break;
       default:
     }
   });
