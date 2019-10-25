@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
+import PropTypes from 'prop-types';
 import { format, parseISO } from 'date-fns';
 import pt from 'date-fns/locale/pt-BR';
 import {
@@ -31,8 +32,6 @@ function Detail({ match }) {
 
   useEffect(() => {
     const { id } = match.params;
-
-    console.tron.log(meetups);
 
     setMeetup(meetups.find(m => m.id.toString() === id));
   }, []); //eslint-disable-line
@@ -91,5 +90,13 @@ function Detail({ match }) {
     </Container>
   );
 }
+
+Detail.propTypes = {
+  match: PropTypes.shape({
+    params: PropTypes.shape({
+      id: PropTypes.number.isRequired,
+    }).isRequired,
+  }).isRequired,
+};
 
 export default Detail;

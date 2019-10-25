@@ -22,7 +22,6 @@ export function* getMeetups() {
     toast.error(
       'Não foi possivel buscar os meetups, tente novamente mais tarde'
     );
-    console.tron.log(err);
     yield put(meetupsFailure());
   }
 }
@@ -36,9 +35,10 @@ export function* cancelMeetup({ payload }) {
       onClose: () => history.push('/dashboard'),
     });
   } catch (err) {
-    // TODO: Pode ocorrer vários tipos de erros ao fazer essa requisição, identificar os erros para o usuário
-    console.tron.log(err);
-    toast.error('Não foi possível cancelar a meetup.');
+    toast.error(
+      `Não foi possível cancelar a meetup. ${err.response.data &&
+        err.response.data.error}`
+    );
   }
 }
 
@@ -57,9 +57,10 @@ export function* updateMeetup({ payload }) {
     yield put(meetupUpdateSuccess(response.data));
     toast.success('Meetup atualizada com sucesso');
   } catch (err) {
-    // TODO: Pode ocorrer vários erros
-    console.tron.log(err);
-    toast.error('Erro ao atualizar as informações da meetup');
+    toast.error(
+      `Erro ao atualizar as informações da meetup. ${err.response.data &&
+        err.response.data.error}`
+    );
   }
 }
 
@@ -75,8 +76,10 @@ export function* createMeetup({ payload }) {
       onClose: () => history.push(`/detail/${meetup.id}`),
     });
   } catch (err) {
-    console.tron.log(err);
-    toast.error('Não foi possível criar uma meetup');
+    toast.error(
+      `Não foi possível criar uma meetup. ${err.response.data &&
+        err.response.data.error}`
+    );
   }
 }
 

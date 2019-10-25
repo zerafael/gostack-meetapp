@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+import PropTypes from 'prop-types';
 import { MdControlPoint } from 'react-icons/md';
 import { Form, Input } from '@rocketseat/unform';
 
@@ -73,5 +74,14 @@ function Edit({ match }) {
     </Container>
   );
 }
+
+Edit.propTypes = {
+  match: PropTypes.shape({
+    params: PropTypes.shape({
+      id: PropTypes.number.isRequired,
+    }).isRequired,
+    path: PropTypes.string.isRequired,
+  }).isRequired,
+};
 
 export default Edit;
