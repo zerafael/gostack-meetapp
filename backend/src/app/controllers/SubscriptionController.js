@@ -150,6 +150,26 @@ class SubscriptionController {
 
     return res.json(subscription);
   }
+
+  async delete(req, res) {
+    const { id } = req.params;
+    const { userId } = req;
+
+    const subscription = await Subscription.findOne({
+      where: {
+        user_id: userId,
+        id,
+      },
+    });
+
+    if (!subscription) {
+      return res.status(400).json({ error: 'Can`t find meetup subscription' });
+    }
+
+    await subscription.destroy();
+
+    return res.send();
+  }
 }
 
 export default new SubscriptionController();
