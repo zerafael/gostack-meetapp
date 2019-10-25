@@ -1,6 +1,7 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import Icon from 'react-native-vector-icons/MaterialIcons';
+import * as Yup from 'yup';
 
 import Background from '~/components/Background';
 import NavBar from '~/components/NavBar';
@@ -17,13 +18,29 @@ import {
   LogoutButton,
 } from './styles';
 
+const schema = Yup.object().shape({
+  name: Yup.string().required('O nome é obrigatório'),
+  email: Yup.string()
+    .email('Insira um email valido')
+    .required('O email é obrigatório'),
+  oldPassword: Yup.string().min(6),
+  password: Yup.string()
+    .min(6)
+    .when('oldPassword', (oldPassword, field) =>
+      oldPassword ? field.required() : field
+    ),
+  confirmPassword: Yup.string().when('password', (password, field) =>
+    password ? field.required().oneOf([Yup.ref('password')]) : field
+  ),
+});
+
 function Profile() {
   const dispatch = useDispatch();
   const profile = useSelector(state => state.user.profile);
 
   const emailRef = useRef();
+  const oldPasswordRef = useRef();
   const passwordRef = useRef();
-  const newPasswordRef = useRef();
   const confirmPasswordRef = useRef();
 
   const [name, setName] = useState(profile.name);
@@ -59,7 +76,7 @@ function Profile() {
       <Container>
         <NavBar />
 
-        <Form>
+        <Form schema={schema}>
           <FormInput
             placeholder="Nome completo"
             autoCorrect={false}
@@ -76,7 +93,7 @@ function Profile() {
             autoCapitalize="none"
             ref={emailRef}
             returnKeyType="next"
-            onSubmitEditing={() => passwordRef.current.focus()}
+            onSubmitEditing={() => oldPasswordRef.current.focus()}
             value={email}
             onChangeText={setEmail}
           />
@@ -86,16 +103,16 @@ function Profile() {
           <FormInput
             placeholder="Senha atual"
             secureTextEntry
-            ref={passwordRef}
+            ref={oldPasswordRef}
             returnKeyType="next"
-            onSubmitEditing={() => newPasswordRef.current.focus()}
+            onSubmitEditing={() => passwordRef.current.focus()}
             value={oldPassword}
             onChangeText={setOldPassword}
           />
           <FormInput
             placeholder="Nova senha"
             secureTextEntry
-            ref={newPasswordRef}
+            ref={passwordRef}
             returnKeyType="next"
             onSubmitEditing={() => confirmPasswordRef.current.focus()}
             value={password}

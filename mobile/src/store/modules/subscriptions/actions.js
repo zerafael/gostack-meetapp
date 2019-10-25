@@ -30,3 +30,17 @@ export function subscribeFailure() {
     type: '@subscription/SUBSCRIBE_FAILURE',
   };
 }
+
+export function unsubscribeRequest(id) {
+  return {
+    type: '@subscription/UNSUBSCRIBE_REQUEST',
+    payload: { id },
+  };
+}
+
+export function unsubscribeSuccess(id) {
+  return {
+    type: '@subscription/UNSUBSCRIBE_SUCCESS',
+    payload: { id },
+  };
+}

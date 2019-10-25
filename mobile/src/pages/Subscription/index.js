@@ -7,7 +7,11 @@ import NavBar from '~/components/NavBar';
 
 import { Container, MeetupsList } from './styles';
 import MeetupBox from '~/components/MeetupBox';
-import { subscriptionsRequest } from '~/store/modules/subscriptions/actions';
+
+import {
+  subscriptionsRequest,
+  unsubscribeRequest,
+} from '~/store/modules/subscriptions/actions';
 
 function Subscription() {
   const dispatch = useDispatch();
@@ -18,7 +22,7 @@ function Subscription() {
   }, []); // eslint-disable-line
 
   function handleCancelSubscription(id) {
-    console.tron.log(id);
+    dispatch(unsubscribeRequest(id));
   }
 
   return (

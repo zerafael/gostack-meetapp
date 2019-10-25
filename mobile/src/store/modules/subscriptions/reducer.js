@@ -15,6 +15,19 @@ export default function subscriptions(state = INITIAL_STATE, action) {
         draft.meetups.push(meetup);
         break;
       }
+      case '@subscription/UNSUBSCRIBE_SUCCESS': {
+        const { id } = action.payload;
+        const { meetups } = draft;
+
+        for (let i = 0; i < draft.meetups.length; i += 1) {
+          if (meetups[i].id === id) {
+            meetups.splice(i, 1);
+          }
+        }
+        draft.meetups = meetups;
+        break;
+      }
+
       default:
     }
   });
