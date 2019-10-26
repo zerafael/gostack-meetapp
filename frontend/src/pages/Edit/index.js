@@ -3,6 +3,11 @@ import { useDispatch, useSelector } from 'react-redux';
 import PropTypes from 'prop-types';
 import { MdControlPoint } from 'react-icons/md';
 import { Form, Input } from '@rocketseat/unform';
+import { parseISO } from 'date-fns';
+import pt from 'date-fns/locale/pt-BR';
+import DatePicker from 'react-datepicker';
+
+import 'react-datepicker/dist/react-datepicker.css';
 
 import {
   meetupUpdateRequest,
@@ -16,17 +21,28 @@ import { Container } from './styles';
 function Edit({ match }) {
   const dispatch = useDispatch();
   const newMeetup = match.path === '/new';
+
   const meetups = useSelector(state => state.meetups.meetups);
+
   const [meetup, setMeetup] = useState({
     id: 0,
     title: '',
     description: '',
     location: '',
-    date: '',
+    date: new Date(),
     banner: {
       url: '',
     },
   });
+  const [meetupDate, setMeetupDate] = useState(meetup.date);
+  const [description, setDescription] = useState(meetup.description);
+
+  useEffect(() => {
+    setDescription(meetup.description);
+    setMeetupDate(
+      typeof meetup.date === 'string' ? parseISO(meetup.date) : meetup.date
+    );
+  }, [meetup]);
 
   useEffect(() => {
     if (!newMeetup) {
@@ -40,6 +56,8 @@ function Edit({ match }) {
     const { banner_id, ...rest } = data;
     const newData = { id: meetup.id, ...rest };
 
+    newData.date = meetupDate;
+
     if (banner_id) {
       newData.banner_id = banner_id;
     }
@@ -50,8 +68,7 @@ function Edit({ match }) {
     }
     dispatch(meetupUpdateRequest(newData));
   }
-  // TODO: Corrigir formatação da data e método de inserção da data
-  // TODO (Verificar dashboard do gobarber web)
+
   return (
     <Container>
       <Form initialData={newMeetup ? null : meetup} onSubmit={handleSubmit}>
@@ -61,12 +78,24 @@ function Edit({ match }) {
           multiline
           name="description"
           placeholder="Descrição completa"
-          value={newMeetup ? null : meetup.description}
+          defaultValue={null}
+          value={description}
+          onChange={e => setDescription(e.target.value)}
         />
 
-        <Input name="date" placeholder="Data do meetup" />
+        <DatePicker
+          className="datePicker"
+          selected={meetupDate}
+          onChange={date => setMeetupDate(date)}
+          showTimeSelect
+          timeFormat="HH:mm"
+          timeIntervals={15}
+          timeCaption="Horário"
+          dateFormat="dd/MM/yyyy - HH:mm"
+          locale={pt}
+        />
         <Input name="location" placeholder="Localização" />
-        <button type="submit">
+        <button className="saveButton" type="submit">
           <MdControlPoint size={22} />
           Salvar meetup
         </button>
@@ -78,7 +107,7 @@ function Edit({ match }) {
 Edit.propTypes = {
   match: PropTypes.shape({
     params: PropTypes.shape({
-      id: PropTypes.number.isRequired,
+      id: PropTypes.string,
     }).isRequired,
     path: PropTypes.string.isRequired,
   }).isRequired,

@@ -10,6 +10,7 @@ export const Container = styled.div`
 
     input {
       height: 50px;
+      width: 940px;
       padding: 0 20px;
       margin: 0 0 10px;
       border: 0;
@@ -39,7 +40,7 @@ export const Container = styled.div`
       }
     }
 
-    button {
+    .saveButton {
       display: flex;
       justify-content: center;
       align-self: flex-end;

@@ -49,7 +49,7 @@ function Dashboard() {
       ) : (
         <ul>
           {meetups.map(meetup => (
-            <Meetup onClick={() => handleDetail(meetup)}>
+            <Meetup key={meetup.id} onClick={() => handleDetail(meetup)}>
               <strong>{meetup.title}</strong>
               <div>
                 <span>{formatDate(meetup.date)}</span>

@@ -55,7 +55,9 @@ export function* updateMeetup({ payload }) {
     const response = yield call(api.put, `meetups/${id}`, meetup);
 
     yield put(meetupUpdateSuccess(response.data));
-    toast.success('Meetup atualizada com sucesso');
+    toast.success('Meetup atualizada com sucesso', {
+      onClose: () => history.push(`/dashboard/`),
+    });
   } catch (err) {
     toast.error(
       `Erro ao atualizar as informações da meetup. ${err.response.data &&
