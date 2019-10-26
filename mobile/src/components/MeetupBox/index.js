@@ -1,6 +1,7 @@
 import React, { useMemo } from 'react';
 import { format, parseISO } from 'date-fns';
 import pt from 'date-fns/locale/pt-BR';
+import PropTypes from 'prop-types';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 
 import {
@@ -14,8 +15,10 @@ import {
 } from './styles';
 
 function MeetupBox({ style, meetup, onPressButton, subscription }) {
-  const dateFormatted = useMemo(() =>
-    format(parseISO(meetup.date), "dd 'de' MMMM, 'às' H'h'", { locale: pt })
+  const dateFormatted = useMemo(
+    () =>
+      format(parseISO(meetup.date), "dd 'de' MMMM, 'às' H'h'", { locale: pt }),
+    [meetup.date]
   );
 
   return (
@@ -49,5 +52,27 @@ function MeetupBox({ style, meetup, onPressButton, subscription }) {
     </Container>
   );
 }
+
+MeetupBox.propTypes = {
+  style: PropTypes.oneOfType([PropTypes.object, PropTypes.array]),
+  meetup: PropTypes.shape({
+    title: PropTypes.string.isRequired,
+    date: PropTypes.string.isRequired,
+    location: PropTypes.string.isRequired,
+    organizer: PropTypes.shape({
+      name: PropTypes.string.isRequired,
+    }).isRequired,
+    banner: PropTypes.shape({
+      url: PropTypes.string,
+    }),
+  }).isRequired,
+  onPressButton: PropTypes.func.isRequired,
+  subscription: PropTypes.bool,
+};
+
+MeetupBox.defaultProps = {
+  style: [],
+  subscription: false,
+};
 
 export default MeetupBox;

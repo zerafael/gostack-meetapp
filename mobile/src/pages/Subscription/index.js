@@ -1,6 +1,7 @@
 import React, { useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import Icon from 'react-native-vector-icons/MaterialIcons';
+import PropTypes from 'prop-types';
 
 import Background from '~/components/Background';
 import NavBar from '~/components/NavBar';
@@ -47,11 +48,17 @@ function Subscription() {
   );
 }
 
+const tabBarIcon = ({ tintColor }) => (
+  <Icon name="person" size={25} color={tintColor} />
+);
+
+tabBarIcon.propTypes = {
+  tintColor: PropTypes.string.isRequired,
+};
+
 Subscription.navigationOptions = {
   tabBarLabel: 'Inscrições',
-  tabBarIcon: ({ tintColor }) => (
-    <Icon name="local-offer" size={25} color={tintColor} />
-  ),
+  tabBarIcon,
 };
 
 export default Subscription;

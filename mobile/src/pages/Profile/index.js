@@ -1,5 +1,6 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+import PropTypes from 'prop-types';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import * as Yup from 'yup';
 
@@ -23,8 +24,13 @@ const schema = Yup.object().shape({
   email: Yup.string()
     .email('Insira um email valido')
     .required('O email é obrigatório'),
-  oldPassword: Yup.string().min(6),
+  oldPassword: Yup.string()
+    .min(6)
+    .transform(value => (!value ? null : value))
+    .nullable(),
   password: Yup.string()
+    .transform(value => (!value ? null : value))
+    .nullable()
     .min(6)
     .when('oldPassword', (oldPassword, field) =>
       oldPassword ? field.required() : field
@@ -137,11 +143,17 @@ function Profile() {
   );
 }
 
+const tabBarIcon = ({ tintColor }) => (
+  <Icon name="person" size={25} color={tintColor} />
+);
+
+tabBarIcon.propTypes = {
+  tintColor: PropTypes.string.isRequired,
+};
+
 Profile.navigationOptions = {
   tabBarLabel: 'Meu perfil',
-  tabBarIcon: ({ tintColor }) => (
-    <Icon name="person" size={25} color={tintColor} />
-  ),
+  tabBarIcon,
 };
 
 export default Profile;

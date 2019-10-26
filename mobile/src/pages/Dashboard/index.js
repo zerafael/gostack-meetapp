@@ -1,6 +1,7 @@
 import React, { useState, useMemo, useEffect } from 'react';
 import { TouchableOpacity } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
+import PropTypes from 'prop-types';
 import { format, addDays, subDays } from 'date-fns';
 import pt from 'date-fns/locale/pt-BR';
 
@@ -104,12 +105,18 @@ function Dashboard() {
   );
 }
 
+const tabBarIcon = ({ tintColor }) => (
+  <Icon name="person" size={25} color={tintColor} />
+);
+
+tabBarIcon.propTypes = {
+  tintColor: PropTypes.string.isRequired,
+};
+
 Dashboard.navigationOptions = {
   title: 'Teste',
   tabBarLabel: 'Meetups',
-  tabBarIcon: ({ tintColor }) => (
-    <Icon name="list" size={25} color={tintColor} />
-  ),
+  tabBarIcon,
 };
 
 export default Dashboard;
