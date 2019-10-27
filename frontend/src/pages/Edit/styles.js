@@ -57,5 +57,10 @@ export const Container = styled.div`
         margin-right: 7px;
       }
     }
+
+    span {
+      color: red;
+      margin-bottom: 15px;
+    }
   }
 `;

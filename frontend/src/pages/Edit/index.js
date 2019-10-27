@@ -6,6 +6,7 @@ import { Form, Input } from '@rocketseat/unform';
 import { parseISO } from 'date-fns';
 import pt from 'date-fns/locale/pt-BR';
 import DatePicker from 'react-datepicker';
+import * as Yup from 'yup';
 
 import 'react-datepicker/dist/react-datepicker.css';
 
@@ -17,6 +18,15 @@ import {
 import BannerInput from './BannerInput';
 
 import { Container } from './styles';
+
+const schema = Yup.object().shape({
+  banner_id: Yup.number()
+    .transform(value => (!value ? undefined : value))
+    .required('O banner é obrigatório'),
+  title: Yup.string().required('O título da meetup é obrigatório'),
+  description: Yup.string().required('A descrição é obrigatória'),
+  location: Yup.string().required('A localização da meetup é obrigatório'),
+});
 
 function Edit({ match }) {
   const dispatch = useDispatch();
@@ -56,6 +66,8 @@ function Edit({ match }) {
     const { banner_id, ...rest } = data;
     const newData = { id: meetup.id, ...rest };
 
+    console.tron.log('Entrou');
+
     newData.date = meetupDate;
 
     if (banner_id) {
@@ -71,7 +83,11 @@ function Edit({ match }) {
 
   return (
     <Container>
-      <Form initialData={newMeetup ? null : meetup} onSubmit={handleSubmit}>
+      <Form
+        initialData={newMeetup ? null : meetup}
+        onSubmit={handleSubmit}
+        schema={schema}
+      >
         <BannerInput name="banner_id" />
         <Input name="title" placeholder="Título do Meetup" />
         <Input
@@ -84,6 +100,7 @@ function Edit({ match }) {
         />
 
         <DatePicker
+          name="date"
           className="datePicker"
           selected={meetupDate}
           onChange={date => setMeetupDate(date)}
